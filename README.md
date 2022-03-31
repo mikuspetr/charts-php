@@ -1,5 +1,4 @@
 **ChartsPhp** is a library that makes an interface between javascript library Chart.js and PHP. You can draw the chart directly from PHP.
-
 ## Prerequisites
 - Chart.js - install Chart.js by NPM, CDN, ... Follow the [installation instructions](https://www.chartjs.org/docs/latest/getting-started/installation.html)
 - composer - you can download from [getcomposer.org](http://getcomposer.org).
