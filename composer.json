@@ -14,6 +14,5 @@
             "ChartsPhp\\": "src/"
         }
     },
-    "require": {},
-    "minimum-stability": "dev"
+    "require": {}
 }
