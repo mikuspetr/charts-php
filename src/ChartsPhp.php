@@ -16,7 +16,7 @@ class ChartsPhp
 
     const CHART_TYPES = [self::TYPE_LINE, self::TYPE_BAR, self::TYPE_PIE, self::TYPE_DOUGHNUT, self::TYPE_POLAR_AREA, self::TYPE_RADAR, self::TYPE_SCATTER, self::TYPE_BUBBLE];
 
-    public static function createChart(string $type = self::TYPE_LINE, array $labels = [], array $datasets = [], array $options = []): Chart
+    public static function createChart(string $type = self::TYPE_LINE, array $labels = [], array $datasets = [], array $options = [])
     {
         if(!in_array($type, self::CHART_TYPES))
         {
