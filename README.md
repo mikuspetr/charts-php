@@ -18,11 +18,11 @@ $chartType = 'bar';
 $labels = ['January', 'February', 'March', 'April', 'May', 'June',];
 $datasets = [
     [
-        'label' => 'apples';
+        'label' => 'apples',
         'data' => [10, 12, 8, 25, 32, 20]
     ],
     [
-        'label' => 'bananas';
+        'label' => 'bananas',
         'data' => [11, 4, 15, 17, 10, 23]
     ]
 ];
@@ -38,11 +38,11 @@ $lineChart = ChartsPhp::createChart('line')
     ->addOptions(['aspectRatio' => 4, 'cubicInterpolationMode' => 'monotone']);
 
 // render html canvas
-$barChart->renderHtml();
+print_r($barChart->renderHtml());
 
 // render javascript code that draw chart in canvas (require Chart.js)
-$barChart->renderScript();
+print_r($barChart->renderScript());
 
-$lineChart->renderHtml();
-$lineChart->renderScrript();
+print_r($lineChart->renderHtml());
+print_r($lineChart->renderScript());
 ```
