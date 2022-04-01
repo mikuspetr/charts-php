@@ -8,7 +8,7 @@
 composer require mikuspetr/charts-php
 ```
 
-## Exaples
+## Exaple
 ```php
 use ChartsPhp\ChartsPhp;
 
@@ -37,12 +37,12 @@ $lineChart = ChartsPhp::createChart('line')
     ->addDatasets($datasets)
     ->addOptions(['aspectRatio' => 4, 'cubicInterpolationMode' => 'monotone']);
 
-// render html canvas
-print_r($barChart->renderHtml());
+// render HTML canvas
+echo $barChart->renderHtml();
 
-// render javascript code that draw chart in canvas (require Chart.js)
-print_r($barChart->renderScript());
+// render JavaScript that draw chart in canvas (require Chart.js)
+echo $barChart->renderScript();
 
-print_r($lineChart->renderHtml());
-print_r($lineChart->renderScript());
+// render both, HTML and JavaScript
+echo $lineChart;
 ```

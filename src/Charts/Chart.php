@@ -224,6 +224,6 @@ abstract class Chart implements ChartInterface
 
     public function __toString()
     {
-        return $this->renderHtml();
+        return $this->renderHtml() . PHP_EOL . $this->renderScript();
     }
 }
