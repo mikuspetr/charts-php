@@ -1,0 +1,20 @@
+{
+    "name": "mikuspetr/charts-php",
+    "description": "PHP library to buid charts with Chart.js",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mikuspetr",
+            "email": "mikus.petr@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ChartsPhp\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.1.0"
+    }
+}
