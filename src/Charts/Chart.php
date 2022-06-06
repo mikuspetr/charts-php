@@ -21,15 +21,16 @@ abstract class Chart implements ChartInterface
 
     protected $type;
     protected $labels = [];
-    public $datasets = [];
+    protected $datasets = [];
     protected $options;
     protected static $instancesCounter = 0;
     protected $id;
     protected $wrapperHtmlAttributes = [];
     protected $colors = self::COLORS;
     protected $warnings = [];
+    protected $displayWarnings;
 
-    public function __construct(string $type, array $labels = [], array $datasets = [], array $options = [])
+    public function __construct(string $type, array $labels = [], array $datasets = [], array $options = [], bool $displayWarnings = self::DISPLAY_WARNINGS)
     {
         $this->type = $type;
         self::$instancesCounter++;
@@ -37,6 +38,7 @@ abstract class Chart implements ChartInterface
         $this->labels = $labels;
         $this->options = $options;
         $this->addDatasets($datasets);
+        $this->displayWarnings = $displayWarnings;
     }
 
     protected function validateDataset(array &$dataset)
@@ -97,6 +99,10 @@ abstract class Chart implements ChartInterface
     {
         $this->addWrapperHtmlAttribute('class', $class);
         return $this;
+    }
+    public function disableWarnings(): void
+    {
+        $this->displayWarnings = false;
     }
 
     public function getId()
@@ -224,7 +230,7 @@ abstract class Chart implements ChartInterface
             $attributes .= $name .'="'.$value.'" ';
         }
         $html = '<div ' . $attributes . '>';
-        if(self::DISPLAY_WARNINGS && count($this->warnings))
+        if($this->displayWarnings && count($this->warnings))
         {
             foreach($this->warnings as $warning)
             {
