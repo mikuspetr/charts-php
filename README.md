@@ -41,9 +41,9 @@ echo $barChart->renderScript();
 
 // use add methods to create new chart
 $lineChart = ChartsPhp::createChart('line')
-    ->addLabels($labels)
+    ->setLabels($labels)
     ->addDatasets($datasets)
-    ->addOptions(['aspectRatio' => 4, 'cubicInterpolationMode' => 'monotone']);
+    ->setOptions(['aspectRatio' => 4, 'cubicInterpolationMode' => 'monotone']);
 
 // render both, HTML and JavaScript
 echo $lineChart;

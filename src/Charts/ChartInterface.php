@@ -3,11 +3,10 @@ namespace ChartsPhp\Charts;
 
 interface ChartInterface
 {
-    public function addLabel(string $label);
-    public function addLabels(array $labels);
+    public function setLabels(array $labels);
     public function addDataset(array $dataset);
     public function addDatasets(array $datasets);
-    public function addOptions(array $options);
+    public function setOptions(array $options);
     public function addWrapperHtmlAttribute(string $name, string $value);
     public function addClass(string $class);
 

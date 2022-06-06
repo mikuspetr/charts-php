@@ -1,6 +1,6 @@
 <?php
 namespace ChartsPhp\Charts;
-class Radar extends MulticolorDatasetChart
+class Radar extends Chart
 {
 
 }

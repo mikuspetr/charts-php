@@ -9,6 +9,9 @@ class MulticolorDatasetChart extends Chart
             $colors = array_map(function($c){
                 return $c['background'];
             }, self::COLORS );
+            if(count($dataset['data']) === count($colors) + 1) {
+                array_pop($colors);
+            }
             $dataset['backgroundColor'] = $colors;
         }
     }

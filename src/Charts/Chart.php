@@ -17,6 +17,7 @@ abstract class Chart implements ChartInterface
         ['border' => 'rgba(13, 102, 105, 1)', 'background' => 'rgba(13, 102, 105, 0.8)',],
         ['border' => 'rgba(53, 128, 125, 1)', 'background' => 'rgba(53, 128, 125, 0.8)',]
     ];
+    const DISPLAY_WARNINGS = true;
 
     protected $type;
     protected $labels = [];
@@ -25,31 +26,17 @@ abstract class Chart implements ChartInterface
     protected static $instancesCounter = 0;
     protected $id;
     protected $wrapperHtmlAttributes = [];
-
     protected $colors = self::COLORS;
+    protected $warnings = [];
 
     public function __construct(string $type, array $labels = [], array $datasets = [], array $options = [])
     {
         $this->type = $type;
         self::$instancesCounter++;
         $this->id = $this->type.'Chart'.self::$instancesCounter;
-
-        $this->type = $type;
         $this->labels = $labels;
         $this->options = $options;
         $this->addDatasets($datasets);
-    }
-
-    public function validateDatasets()
-    {
-        if($this->datasets != []) {
-            foreach($this->datasets as $dataset)
-            {
-                $this->validateDataset($dataset);
-                $validated[] = $dataset;
-            }
-            $this->datasets = $validated;
-        }
     }
 
     protected function validateDataset(array &$dataset)
@@ -73,14 +60,9 @@ abstract class Chart implements ChartInterface
         }
     }
 
-    public function addLabel(string $label)
+    public function setLabels(array $labels)
     {
-        array_push($this->labels, $label);
-        return $this;
-    }
-    public function addLabels(array $labels)
-    {
-        $this->labels = array_merge($this->labels, $labels);
+        $this->labels = $labels;
         return $this;
     }
 
@@ -100,7 +82,7 @@ abstract class Chart implements ChartInterface
         return $this;
     }
 
-    public function addOptions(array $options)
+    public function setOptions(array $options)
     {
         $this->options = array_merge($this->options, $options);
         return $this;
@@ -195,11 +177,32 @@ abstract class Chart implements ChartInterface
         return $this;
     }
 
+    public function addWarning(string $message)
+    {
+        array_push($this->warnings, $message);
+        return $this;
+    }
+
+    protected function validateBeforeRender()
+    {
+        $maxDatasetItems = 0;
+        foreach($this->datasets as $dataset)
+        {
+            $maxDatasetItems = $maxDatasetItems < count($dataset['data']) ? count($dataset['data']) : $maxDatasetItems;
+        }
+        if($maxDatasetItems > count($this->labels)) {
+            $this->addWarning('Missing '.($maxDatasetItems - count($this->labels)).' labels. Your char has only '.count($this->labels).' labels for '.$maxDatasetItems. ' data values. Set the correct number of labels to display all data!');
+        }
+        if ($maxDatasetItems < count($this->labels)) {
+            $this->addWarning('Missing ' . (count($this->labels) - $maxDatasetItems) . ' data values in chart datasets. Your char has maximal ' . $maxDatasetItems . ' values in datasets, but ' . count($this->labels) . ' labels.');
+        }
+    }
+
     public function renderScript()
     {
         return "<script type='text/javascript'>
+        const ctx".$this->getId()." = document.getElementById('".$this->getId(). "').getContext('2d');
         try{
-        const ctx".$this->getId()." = document.getElementById('".$this->getId()."').getContext('2d');
         const ".$this->getId()." = new Chart(ctx".$this->getId().", {
             type: '". $this->getType() ."',
             data: ". json_encode($this->getData()['data'])  .",
@@ -215,11 +218,21 @@ abstract class Chart implements ChartInterface
     public function renderHtml()
     {
         $attributes = '';
+        $this->validateBeforeRender();
         foreach($this->wrapperHtmlAttributes as $name => $value)
         {
             $attributes .= $name .'="'.$value.'" ';
         }
-        return '<div '.$attributes.'><canvas id="'.$this->id.'"></canvas></div>';
+        $html = '<div ' . $attributes . '>';
+        if(self::DISPLAY_WARNINGS && count($this->warnings))
+        {
+            foreach($this->warnings as $warning)
+            {
+                $html .= '<div style="color: red; padding: 5px 10px;">'.$warning.'</div>';
+            }
+        }
+        $html .= '<canvas id="'.$this->id.'"></canvas></div>';
+        return $html;
     }
 
     public function __toString()
